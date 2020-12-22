@@ -1,0 +1,4 @@
+ArrayList()接口 继承AbstractList类 ,实现了list接口
+HashSet和TreeSet 继承了AbstractSet类
+HashSet 实现了Set接口
+TreeSet 实现了NavigableSet接口, NavigableSet接口继承了SortedSet ,SortedSet接口实现了set接口

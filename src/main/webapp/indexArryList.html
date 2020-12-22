@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>页面</title>
+<script type="text/javascript" src="../jquery/jquery.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="../bootstrap/css/bootstrap.min.css" />
+<script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+	<div class="table-bordered">
+		<form id="userListForm">
+			<table class="table   table-hover">
+				<tr>
+					<th>标题名</th>
+					<th>标题内容</th>
+					<th>标题时间</th>
+					<th>操作</th>
+				</tr>
+
+			</table>
+		</form>
+	</div>
+	<script type="text/javascript">
+		$(function() {
+			$.get("/queryByAll", function(rs) {
+				for (var i = 0; i < rs.length; i++) {
+					$("#f1").append(
+							"<tr>" + "<td>" + arr[i].id + "</td>" + "<td>"
+									+ arr[i].title + "</td>" + "<td>"
+									+ arr[i].content + "</td>" + "<td>"
+									+ arr[i].occurrenceTime + "</td>" + "<td>"
+									+ arr[i].state + "</td>" + "</tr>");
+
+				}
+				;
+
+			}, "json");
+		});
+	</script>
+
+</body>
+</html>

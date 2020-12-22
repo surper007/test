@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ajax</title>
+<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript">
+	/* $(function() {
+		$("#btn").click(function() {
+			var itemForm = $("#itemForm");
+			var formData = new FormData($("#itemForm")[0]); 
+			$.ajax({
+				dataType: "json",
+			    type: "post",
+			    url:  'QueryByNameServlet', 
+			    data: formData,
+			    processData: false,
+			    contentType: false,
+			    success: function(data) {
+			    }
+			});
+		
+			
+		})
+	}); */
+	$(function(){
+		$("#btn").click(function(){
+			$.ajax({          
+		       	 url:"QueryByNameServlet", 
+		         dataType:"json",  
+		         type:"post", 
+		         async:"true",
+		         data:{username=username},
+		         success:function(data){
+		        	 alert("请求成功");
+		         }   
+		         
+		});
+		
+		});
+	})
+	
+</script>
+</head>
+<body>
+	<form id="itemForm">
+		用户名:&nbsp;&nbsp;&nbsp; <input type="text" name="username"
+			id="username">
+		<button type="button" id="btn">确定</button>
+		
+	</form>
+	<div id="box"></div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- 注解的处理器映射器,注解的处理器适配器 -->
+	<mvc:annotation-driven conversion-service="conversionService" />
+
+
+	<!-- 配置转换器服务 -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<!-- 指定自己定义的Converter类 -->
+				<bean class="com.zl.user.converter.DateConverter">
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- 视图解析器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+
+		<property name="suffix" value=".jsp"></property>
+
+		<!-- 产生带JSTL标签的视图 -->
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView"></property>
+	</bean>
+
+	<!-- 扫描Controller的包上的注解 -->
+	<context:component-scan base-package="com.example.demo.web" />
+
+
+	<!-- 配置的全局异常处理器 -->
+	<!-- <bean class="com.zl.user.web.MyExceptionHandler"></bean> -->
+
+
+	<!-- 文件上传的解析器 
+		注意: id 的值一定为multipartResolver
+	-->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 设置最大的上传文件大小 :10M    单位: B 字节     1B = 8b
+			 10*1024*1024
+		-->
+		<property name="maxUploadSize" value="10485760"></property>
+	</bean>
+
+
+
+	<!-- 拦截器的配置 -->
+	<mvc:interceptors>
+		<!-- 具体的拦截器 -->
+		<mvc:interceptor>
+		    <!-- 配置拦截url 
+		    	mvc:mapping
+		    	  比如: /jsp/admin/**   拦截jsp目录下admin目录下以及所有的子目录的Controller的方法
+		    	     /jsp/admin/*     拦截jsp目录下admin目录下的Controller的方法
+		    -->
+		    <mvc:mapping path="/jsp/admin/**"/>
+		    
+		    <!-- 排除某个路径 -->
+		   <!--  <mvc:exclude-mapping path="/jsp/admin/userList.action"/> -->
+		    <!-- 拦截器的bean -->
+		    <bean class="com.zl.user.web.interpetor.AInterceptor"></bean>
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
+		    <mvc:mapping path="/jsp/admin/**"/>
+		    <!-- 拦截器的bean -->
+		    <bean class="com.zl.user.web.interpetor.BInterceptor"></bean>
+		</mvc:interceptor>
+	
+	</mvc:interceptors>
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

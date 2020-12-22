@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.RecordMapper">
+     <!--用户表 tb_user -->
+	<sql id="usercolumn">id,name,pwd</sql>
+	<!--记录表tb_Record -->
+	<sql id="Recordcolumn">id,title,content,occurrenceTime,state</sql>
+	<!--登录  -->
+	<select id="queryByNameAndPwd" resultType="User">
+	select name,pwd from tb_user where name=#{name} and pwd=#{pwd}
+	</select>
+	
+	<!--测试  -->
+	<select id="queryByAll" resultType="Record" parameterType="Record">
+	select <include refid="Recordcolumn"/> from tb_Record  WHERE id=1
+	</select>
+	
+	<!--事件分页-->
+	<select id="findInfo" parameterType="Pages"
+		resultType="Record">
+       SELECT id,title,content,occurrenceTime FROM tb_record <include refid="dmConditionSql" /> LIMIT #{start},#{end}
+	</select>
+	<!--查询记录数  -->
+	<select id="findCount" resultType="int" parameterType="Pages">
+		select count(1) from tb_Record <include refid="dmConditionSql" />
+	</select>
+	
+	<sql id="dmConditionSql">
+	  <where>
+	    state =1
+	    <if test="id != -1">
+				and id = #{id}
+			</if>
+	  </where>
+	</sql>
+	
+	<!-- 通过查询事件id查询用于数据的回显 -->
+	<select id="findRecord" resultType="Record">
+		select
+		<include refid="Recordcolumn"></include> from
+		tb_Record
+		where id = #{id}
+	</select>
+	
+	
+	<!-- 修改事件 -->
+	<update id="updateRecord" parameterType="Record">
+		update 
+		tb_Record
+		<set>
+			<if test="title != '' and title != null">
+				title=#{title},
+			</if>
+			<if test="content != '' and content != null">
+				content=#{content},
+			</if>
+			<if test="occurrenceTime != null">
+				occurrenceTime=#{occurrenceTime}
+			</if>
+		</set>
+		where id=#{id}
+
+	</update>
+	<!--批量删除  -->
+	<update id="batchDelRecord">
+		UPDATE tb_Record SET state = 0
+		<where>
+			<foreach collection="array" item="id"
+				open="id in (" close=")" separator=",">
+				#{id}
+			</foreach>
+		</where>
+
+	</update>
+	
+	<!--添加事件  -->
+	<insert id="addaddRecord" parameterType="Record">
+		insert into tb_Record(id,title,content,occurrenceTime,state)
+		values(#{id},#{title},#{content},#{occurrenceTime},#{state})
+	</insert>
+	
+	<!--注册用户  -->
+	<insert id="addUser" parameterType="com.example.demo.pojo.User">
+	 insert into tb_user values(0,#{name},#{pwd},#{photo},#{admin},#{brithday},#{state})
+	</insert>
+	
+	<!--用户总记录数  -->
+	<select id="findUserlistCount" resultType="int" parameterType="Pages">
+		select count(1) from tb_user <include refid="dmConditionSql" />
+	</select>
+	
+	
+	<!--用户分页  -->
+	<select id="findUserInfo" parameterType="Pages"
+		resultType="User">
+       SELECT id,name,pwd,photo,admin,brithday FROM tb_user <include refid="dmConditionSql" /> LIMIT #{start},#{end}
+	</select>
+	
+	
+
+</mapper>

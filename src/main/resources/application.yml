@@ -1,0 +1,35 @@
+server: 
+  port: 9999
+  
+spring: 
+  profiles: 
+    active: dev
+  resources:
+   static-locations: file:D:/upload/user/
+  mvc: 
+    view: 
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+    static-path-pattern: /images/**
+  http: 
+    encoding: 
+      charset: UTF-8
+      force: true
+      enabled: true
+  datasource: 
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/zhengyuan?serverTimezone=GMT%2B8
+    username: root
+    password: 123
+    # 上传文件总的最大值
+  servlet:
+    multipart:
+       max-request-size: 10MB
+       max-file-size: 10MB
+    
+mybatis: 
+  type-aliases-package: com.example.demo.pojo
+  mapper-locations: classpath:mapper/*Mapper.xml
+  
+
+
